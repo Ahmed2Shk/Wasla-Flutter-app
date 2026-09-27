@@ -94,7 +94,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     final result = await _repo.login(request);
     return result.fold(
       (failure) {
-        state = state.copyWith(status: AuthStatus.unauthenticated, error: failure.message);
+        state = state.copyWith(status: AuthStatus.unauthenticated, error: failure.displayMessage);
         return false;
       },
       (user) {
@@ -112,7 +112,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     final result = await _repo.verifyPhone(request);
     return result.fold(
       (failure) {
-        state = state.copyWith(error: failure.message);
+        state = state.copyWith(error: failure.displayMessage);
         return false;
       },
       (user) {
@@ -126,7 +126,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     final result = await _repo.setPin(pin);
     return result.fold(
       (failure) {
-        state = state.copyWith(error: failure.message);
+        state = state.copyWith(error: failure.displayMessage);
         return false;
       },
       (_) {
@@ -144,7 +144,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     final result = await _repo.pinLogin(pin);
     return result.fold(
       (failure) {
-        state = state.copyWith(error: failure.message);
+        state = state.copyWith(error: failure.displayMessage);
         return false;
       },
       (user) {

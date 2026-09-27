@@ -5,7 +5,7 @@
 class ApiConstants {
   ApiConstants._();
 
-  static const String baseUrl = 'https://10.0.2.2:7255'; // غيّر البورت حسب launchSettings.json عندك
+  static const String baseUrl = 'https://10.0.2.2:7129'; // غيّر البورت حسب launchSettings.json عندك
 
   // ---- Auth (مطابق لـ AuthController: [Route("api/auth")]) ----
   static const String register = '/api/auth/register';

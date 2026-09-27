@@ -69,7 +69,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     setState(() => _isLoading = false);
 
     result.fold(
-      (failure) => setState(() => _error = failure.message),
+      (failure) => setState(() => _error = failure.displayMessage),
       (_) => context.push('/auth/verify-otp', extra: {
         'phoneNumber': _phoneController.text.trim(),
         'purpose': OtpPurpose.registration,
