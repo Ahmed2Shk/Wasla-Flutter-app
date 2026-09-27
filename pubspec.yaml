@@ -1,0 +1,42 @@
+name: wasla_app
+description: "وصلة - تطبيق ربط الموزعين بأصحاب المحلات"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management + DI
+  flutter_riverpod: ^2.5.1
+
+  # Networking
+  dio: ^5.4.3+1
+
+  # Secure Storage (Access/Refresh Token)
+  flutter_secure_storage: ^9.2.2
+
+  # Routing
+  go_router: ^14.2.0
+
+  # Icons / fonts
+  cupertino_icons: ^1.0.6
+  google_fonts: ^6.2.1
+
+  # Utilities
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  # فعّل هاد إذا ضفت صور/شعار داخل assets/images
+  # assets:
+  #   - assets/images/
