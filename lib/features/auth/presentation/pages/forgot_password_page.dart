@@ -48,7 +48,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
     setState(() => _isLoading = false);
 
     result.fold(
-      (failure) => setState(() => _error = failure.message),
+      (failure) => setState(() => _error = failure.displayMessage),
       (_) => setState(() => _step = 1),
     );
   }
@@ -72,7 +72,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
     setState(() => _isLoading = false);
 
     result.fold(
-      (failure) => setState(() => _error = failure.message),
+      (failure) => setState(() => _error = failure.displayMessage),
       (_) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('تم تغيير كلمة المرور، سجّل الدخول من جديد')),

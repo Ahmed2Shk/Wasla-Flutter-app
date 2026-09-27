@@ -29,7 +29,7 @@ class RegisterRequest {
         'email': email,
         'phoneNumber': phoneNumber,
         'password': password,
-        'userType': userType.toApiString,
+        'userType': userType.apiValue,
         'city': city,
         'area': area,
         'street': street,

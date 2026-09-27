@@ -21,6 +21,16 @@ class AppFailure {
     return (list != null && list.isNotEmpty) ? list.first : null;
   }
 
+  /// الرسالة يلي **لازم تُعرض دايماً** للمستخدم — لو فيه أخطاء تفصيلية لكل
+  /// حقل (fieldErrors)، بتُدمج وتحل محل الرسالة العامة غير المفيدة
+  /// ("بيانات المدخلات غير صالحة" / "One or more validation errors occurred")
+  /// بدل ما تختفي. كل شاشة لازم تعرض هاي، مش `message` مباشرة.
+  String get displayMessage {
+    if (fieldErrors == null || fieldErrors!.isEmpty) return message;
+    final details = fieldErrors!.values.expand((v) => v).join('\n');
+    return details.isEmpty ? message : details;
+  }
+
   factory AppFailure.fromDioException(DioException e) {
     try {
       final data = e.response?.data;

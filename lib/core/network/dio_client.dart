@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import '../constants/api_constants.dart';
 import '../storage/token_manager.dart';
@@ -17,11 +19,19 @@ class DioClient {
           'Content-Type': 'application/json',
           'Accept-Language': 'ar',
         },
-        // بيئة التطوير فقط: لو عندك شهادة HTTPS محلية (dev cert) وبيرفض الاتصال،
-        // فعّل هاد مؤقتاً. لا تستخدمه بالإنتاج.
-        // validateStatus: (status) => status != null && status < 500,
       ),
     );
+
+    // بيئة التطوير فقط: ASP.NET Core بيولّد شهادة HTTPS محلية (Self-signed)
+    // مش موثوقة من نظام Android، فبيرفض الاتصال بصمت (badCertificate).
+    // هاد بيخلي التطبيق يثق فيها وقت التطوير بس — أبداً لا تستخدمه بالإنتاج.
+    if (kDebugMode) {
+      (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+        final client = HttpClient();
+        client.badCertificateCallback = (cert, host, port) => true;
+        return client;
+      };
+    }
 
     final interceptor = AuthInterceptor(tokenManager)
       ..onSessionExpired = onSessionExpired;

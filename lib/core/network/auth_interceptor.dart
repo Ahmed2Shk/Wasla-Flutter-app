@@ -40,6 +40,15 @@ class AuthInterceptor extends Interceptor {
       return handler.next(err);
     }
 
+    // 401 من نقطة عامة (تسجيل دخول، PIN، إلخ) معناه "بيانات غلط"، مش "جلسة منتهية" —
+    // لازم يمر برسالته الحقيقية القادمة من السيرفر بدون أي محاولة تجديد توكن.
+    // بدون هالفحص، إدخال باسورد أو PIN غلط كان بيستهلك/يدوّر الـ refresh token
+    // بصمت بكل محاولة فاشلة، رغم إنه ما إله علاقة بانتهاء الجلسة إطلاقاً.
+    final isPublic = _publicPaths.any((p) => err.requestOptions.path.contains(p));
+    if (isPublic) {
+      return handler.next(err);
+    }
+
     final refreshed = await tokenManager.refreshSession((rt) async {
       try {
         final response = await _plainDio.post(

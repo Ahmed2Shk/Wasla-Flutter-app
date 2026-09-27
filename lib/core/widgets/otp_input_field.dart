@@ -57,30 +57,53 @@ class _SegmentedCodeInputState extends State<SegmentedCodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: List.generate(widget.length, (index) {
-        return SizedBox(
-          width: 46,
-          height: 54,
-          child: TextField(
-            controller: _controllers[index],
-            focusNode: _focusNodes[index],
-            textAlign: TextAlign.center,
-            obscureText: widget.obscure,
-            keyboardType: TextInputType.number,
-            maxLength: 1,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: const InputDecoration(
-              counterText: '',
-              filled: true,
-              fillColor: AppColors.surface,
+    // الأرقام (OTP/PIN) دايماً بتتكتب وتتعرض من اليسار لليمين، حتى بتطبيق عربي
+    // بالكامل — نفرض LTR هون بس على صف الصناديق، بغض النظر عن اتجاه التطبيق
+    // العام (RTL)، وإلا التركيز بيتحرك "للخلف" بصرياً والأرقام بتبين مقلوبة.
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(widget.length, (index) {
+          return SizedBox(
+            width: 46,
+            height: 54,
+            child: TextField(
+              controller: _controllers[index],
+              focusNode: _focusNodes[index],
+              textAlign: TextAlign.center,
+              obscureText: widget.obscure,
+              keyboardType: TextInputType.number,
+              maxLength: 1,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              decoration: InputDecoration(
+                counterText: '',
+                filled: true,
+                fillColor: AppColors.surface,
+                contentPadding: EdgeInsets.zero,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.divider),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.divider),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.mint, width: 2),
+                ),
+              ),
+              onChanged: (v) => _onChanged(index, v),
             ),
-            onChanged: (v) => _onChanged(index, v),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }
